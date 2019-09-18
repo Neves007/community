@@ -1,16 +1,38 @@
-    package life.majiang.community.community.controller;
+package life.majiang.community.community.controller;
 
 
-    import org.springframework.stereotype.Controller;
-    import org.springframework.ui.Model;
-    import org.springframework.web.bind.annotation.GetMapping;
-    import org.springframework.web.bind.annotation.RequestParam;
+import life.majiang.community.community.mapper.UserMapper;
+import model.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 
-    @Controller
-    public class IndexController {
-        @GetMapping("/")
-        public String index() {
-            return "index";
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+
+@Controller
+public class IndexController {
+    @Autowired
+    private UserMapper userMapper;
+
+    @GetMapping("/")
+    public String index(HttpServletRequest request) {
+        //访问首页时，查看浏览器cookie中的token,拿到这个token去数据库中查有没有这个人，如果有把user放到session里面，前端通过session判断是否展示
+        Cookie[] cookies = request.getCookies();
+        for (Cookie cookie : cookies) {
+            if (cookie.getName().equals("token")) {
+                String token = cookie.getValue();
+                User user = userMapper.findByToken(token);
+                if (user != null) {
+                    request.getSession().setAttribute("user", user);
+                }
+                break;
+            }
+
         }
 
+
+        return "index";
     }
+
+}

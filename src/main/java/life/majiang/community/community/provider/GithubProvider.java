@@ -40,6 +40,7 @@ public class GithubProvider {
     //拿token换user信息，返回user对象
     public GithubUser getUser(String accessToken){
         OkHttpClient client = new OkHttpClient();
+        System.out.println(accessToken);
         Request request = new Request.Builder()
                 .url("https://api.github.com/user?access_token="+accessToken)
                 .build();
