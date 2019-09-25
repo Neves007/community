@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -33,7 +34,6 @@ public class AuthorizeController {
     @Autowired
     private UserMapper userMapper;  //为什么爆红，因为idea不认为@Mapper可以生成bean，加一个@Component就可以了
 
-
     @GetMapping("/callback")
     public String callback(@RequestParam(name="code") String code,  //通过@RequestParam(name="code") String code  接受参数，参数名为code，类型为String
                            @RequestParam(name = "state") String state,
@@ -49,13 +49,15 @@ public class AuthorizeController {
         accessTokenDTO.setRedirect_uri(redirect_uri);
         accessTokenDTO.setClient_id(client_id);
         accessTokenDTO.setClient_secret(client_secret);
+
         String accessToken = githubProvider.GetAccessToken(accessTokenDTO);
         GithubUser githubUser = githubProvider.getUser(accessToken);
-        System.out.println(githubUser.getId());  //成功拿到user信息
+        System.out.println("accesstoken "+accessToken);  //成功拿到user信息，把user存到数据库
         if(githubUser!=null){
+
             User user = new User();
             String token = UUID.randomUUID().toString();
-            user.setToken(token);
+            user.setToken(token);  //随机写个token
             user.setName(githubUser.getName());
             user.setAccountId(String.valueOf(githubUser.getId()));
             user.setGmtCreate(System.currentTimeMillis());
@@ -66,6 +68,7 @@ public class AuthorizeController {
             return "redirect:/";
         }
         else{
+            System.out.println("艹！GitHubuser没拿到");
             //登录失败，重新登录
             return "redirect:/";
         }

@@ -19,13 +19,19 @@ import java.io.IOException;
 public class GithubProvider {
     //拿code换token，返回token
     public String GetAccessToken(AccessTokenDTO accessTokenDTO) {   //属性超过3个就应该创建类来封装
+        System.out.println("code"+accessTokenDTO.getCode());
+        System.out.println("state"+accessTokenDTO.getState());
+        System.out.println("redirect_uri"+accessTokenDTO.getRedirect_uri());
+        System.out.println("client_id"+accessTokenDTO.getClient_id());
+        System.out.println("client_secret"+accessTokenDTO.getClient_secret());
         MediaType mediaType = MediaType.get("application/json; charset=utf-8");
 
         OkHttpClient client = new OkHttpClient();
         RequestBody body = RequestBody.create(mediaType, JSON.toJSONString(accessTokenDTO));
+        System.out.println("jason accesstoken "+JSON.toJSONString(accessTokenDTO));
         Request request = new Request.Builder()
                 .url("https://github.com/login/oauth/access_token")
-                .post(body)  //
+                .post(body)
                 .build();
         try (Response response = client.newCall(request).execute()) {
             String string = response.body().string();
@@ -48,9 +54,11 @@ public class GithubProvider {
             Response response = client.newCall(request).execute();
             String string = response.body().string();
             GithubUser githubUser = JSON.parseObject(string, GithubUser.class);   //把string的json对象解析成类对象
-
+            System.out.println("username"+ githubUser.getName());
+            System.out.println("userid"+ githubUser.getId());
             return githubUser;
         } catch (IOException e) {
+            System.out.println("大哥错了");
             e.printStackTrace();
         }
         return null;
