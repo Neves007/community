@@ -290,8 +290,8 @@
     update QUESTION
     <set>
       <if test="record.id != null">
-        ID = #{record.id,jdbcType=BIGINT},
-      </if>
+      ID = #{record.id,jdbcType=BIGINT},
+    </if>
       <if test="record.title != null">
         TITLE = #{record.title,jdbcType=VARCHAR},
       </if>

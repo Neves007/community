@@ -148,8 +148,7 @@ public class QuestionService {
             //更新
            QuestionExample example = new QuestionExample();
             example.createCriteria()
-                    .andCreatorEqualTo(question.getId());
-
+                    .andIdEqualTo(question.getId());
             int updated = questionMapper.updateByExampleSelective(question,example);
             if (updated !=1 ){
                 throw new CustomizeException(CustomizeErrorCode.QUESTION_NOTE_FOUND);
