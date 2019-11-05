@@ -10,3 +10,31 @@ body{
     float: right;
     margin-top: 15px;
 }
+
+.user-avatar{
+    width: 64px;
+    height: 64px;
+}
+.text-desc{
+    font-size:12px;
+    font-weight:normal;
+    color: #999;
+}
+.profile .section{
+    margin-top: 15px;
+}
+.community-menu {
+    color: #999;
+    font-size: 13px;
+}
+.question-right{
+    margin: 15px 0px;
+    padding: 15px;
+    border-right: 1px solid #efefef;
+}
+.question-left{
+    margin:15px 0px;
+}
+.jumbotron{
+    margin: 50px;
+}

@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${question.title}"></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/static/css/community.css">
+
+    <script src="/static/js/jquery-3.4.1.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+<div th:insert="~{navigation :: nav}"></div>
+<div>
+    <div class="container-fluid main profile">
+        <div class="row">
+            <div class="question-right col-lg-9 .col-md-12 .col-sm-12 .col-xs-12">
+
+                <h2><span th:text="${question.title}"></span></h2>
+                <span class="text-desc">
+                    作者：<span th:text="${question.user.getName()}"></span> |
+                    发布时间：<span th:text="${#dates.format(question.gmtCreate,' yyyy-MM-dd')}"></span> |
+                    阅读数：<span th:text="${question.viewCount}"></span>
+                </span>
+                <div><hr></div>
+                <div th:text="${question.description}"></div>
+                <div><hr></div>
+                <div th:if="${session.user !=null && session.user.id == question.creator}">
+                    <a th:href="@{'/publish/'+ ${question.id}}" class="community-menu" >
+                        <span class="community-menu glyphicon glyphicon-pencil " >编辑</span>
+                    </a>
+                </div>
+            </div>
+            <div class="question-left col-lg-3 .col-md-12 .col-sm-12 .col-xs-12">
+                <div class="col-lg-12 .col-md-12 .col-sm-12 .col-xs-12">
+                    <h4>发起人</h4>
+                    <div class="media">
+                        <div class="media-left">
+                            <a href="#">
+                                <img class="img-circle user-avatar " th:src="${question.user.avatarUrl}">
+                            </a>
+                        </div>
+                        <div class="media-body">
+                            <h5 class="media-heading" >
+                                <span th:text="${question.user.name}"></span>
+                            </h5>
+                        </div>
+                    </div>
+                </div>
+                <hr class="col-lg-12 .col-md-12 .col-sm-12 .col-xs-12">
+                <div class="col-lg-12 .col-md-12 .col-sm-12 .col-xs-12">
+                    <h4>相关问题</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
